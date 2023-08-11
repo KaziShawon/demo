@@ -2,3 +2,4 @@ streamlit_chat
 unidecode
 requests
 pydantic
+python-dotenv
