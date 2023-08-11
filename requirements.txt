@@ -1,0 +1,5 @@
+streamlit_chat
+unidecode
+requests
+pydantic
+streamlit
