@@ -1,8 +1,10 @@
 import os
 import json
 import requests
+import pandas as pd
 import streamlit as st
 from typing import Optional
+from datetime import datetime
 from dotenv import load_dotenv
 from unidecode import unidecode
 from streamlit_chat import message
@@ -84,6 +86,23 @@ def display_conversation(conversation_history):
         st.session_state.interleaved_conversation.append([False, ai_text])
         st.session_state.interleaved_conversation.append([True, human_text])
 
+def download_conversation():
+    """
+    Convert conversations to datafram and download as CSV
+    """
+    conversation_df = pd.DataFrame(
+        reversed(st.session_state.interleaved_conversation), columns=["is_user", "text"]
+    )
+    csv = conversation_df.to_csv(index=False)
+
+    st.download_button(
+        label="💾 Download conversation",
+        data=csv,
+        file_name=f"conversation_{datetime.now().strftime('%Y%m%d%H%M%S')}.csv",
+        mime="text/csv",
+        use_container_width=True,
+    )
+
 @st.cache_data()
 def microservice_response(user_input):
     """Send the user input to the LLM API and return the response."""
@@ -110,6 +129,10 @@ def main():
 
     # Display the entire conversation on the frontend
     display_conversation(st.session_state.conversation_history)
+
+    # Download conversation code runs last to ensure the latest messages are captured
+    with col2:
+        download_conversation()
 
 
 if __name__ == "__main__":
