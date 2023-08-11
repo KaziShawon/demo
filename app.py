@@ -1,14 +1,19 @@
+import os
 import json
 import requests
 import streamlit as st
 from typing import Optional
+from dotenv import load_dotenv
 from unidecode import unidecode
 from streamlit_chat import message
 from pydantic import BaseModel, Field
 
+load_dotenv()
+
 def generate_response(user_input):
+    
     _url_message = 'https://api.wit.ai/message'
-    _header = {'Authorization': f'Bearer {st.secrets["WitKey"]}'}
+    _header = {'Authorization': f'Bearer {os.getenv("WitKey")}'}
     resp = requests.get(f"{_url_message}?v=20230215&q={unidecode(user_input)}", headers=_header)
     data = json.loads(resp.content)
 
