@@ -117,7 +117,7 @@ def microservice_response(user_input):
     st.session_state.conversation_history["generated_responses"].append(response)
 
 def main():
-    st.title("Microservices ChatBot App")
+    st.title("VOV intent classification App")
 
     col1, col2 = st.columns(2)
     with col1:
